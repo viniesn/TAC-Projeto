@@ -1,3 +1,6 @@
 [submodule "backend"]
 	path = backend
 	url = git@github.com:woragis/computer-advanced-topics-backend.git
+[submodule "ai"]
+	path = ai
+	url = git@github.com:woragis/computer-advanced-topics-ai.git
