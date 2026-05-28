@@ -12,3 +12,5 @@ export function useAnalysis(text: string): AnalysisResult {
 
   return analysis;
 }
+
+export { analyzeText };

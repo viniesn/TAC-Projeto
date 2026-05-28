@@ -1,7 +1,7 @@
 // src/routes/AppRouter.tsx
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "../pages/Loginogin";
+import Login from "../pages/Home";
 import Dashboard from "../pages/Dashboard";
 
 export function AppRouter() {

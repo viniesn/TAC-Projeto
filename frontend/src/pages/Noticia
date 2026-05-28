@@ -1,0 +1,392 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const Home = () => {
+
+  const navigate = useNavigate();
+
+  const [titulo, setTitulo] =
+    useState("");
+
+  const [conteudo, setConteudo] =
+    useState("");
+
+  const [fonte, setFonte] =
+    useState("");
+
+  const [resultado, setResultado] =
+    useState("");
+
+  const [score, setScore] =
+    useState(0);
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const analisar = async () => {
+
+    if (
+      !titulo ||
+      !conteudo ||
+      !fonte
+    ) {
+
+      alert(
+        "Preencha todos os campos."
+      );
+
+      return;
+
+    }
+
+    setLoading(true);
+
+    setTimeout(async () => {
+
+      // SIMULAÇÃO IA
+
+      const fake =
+        conteudo
+          .toLowerCase()
+          .includes("urgente") ||
+        conteudo
+          .toLowerCase()
+          .includes("compartilhe");
+
+      const resultadoFinal =
+        fake
+          ? "Fake News"
+          : "Confiável";
+
+      const scoreFinal =
+        fake ? 92 : 87;
+
+      setResultado(
+        resultadoFinal
+      );
+
+      setScore(scoreFinal);
+
+      // SALVA NO HISTÓRICO
+
+      try {
+
+        await fetch(
+          "http://localhost:8080/historico",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              titulo,
+              conteudo,
+              status:
+                resultadoFinal,
+            }),
+          }
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Erro ao salvar histórico:",
+          error
+        );
+
+      }
+
+      setLoading(false);
+
+    }, 1500);
+
+  };
+
+  const obterCorResultado = () => {
+
+    if (
+      resultado === "Fake News"
+    ) {
+
+      return "#ff4d4f";
+
+    }
+
+    if (
+      resultado === "Confiável"
+    ) {
+
+      return "#52c41a";
+
+    }
+
+    return "#faad14";
+
+  };
+
+  return (
+
+    <div style={styles.container}>
+
+      {/* HEADER */}
+      <div style={styles.header}>
+
+        <div>
+
+          <h1 style={styles.titulo}>
+            📰 Detector de Fake News
+          </h1>
+
+          <p style={styles.subtitulo}>
+            Verifique se uma notícia
+            é confiável usando IA
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* MENU */}
+      <div style={styles.menu}>
+
+        <button
+          style={styles.menuButton}
+          onClick={() =>
+            navigate("/tendencias")
+          }
+        >
+          🔥 Tendências
+        </button>
+
+        <button
+          style={styles.menuButton}
+          onClick={() =>
+            navigate("/historico")
+          }
+        >
+          📄 Histórico
+        </button>
+
+      </div>
+
+      {/* FORM */}
+      <div style={styles.form}>
+
+        <input
+          type="text"
+          placeholder="Título da notícia"
+          value={titulo}
+          onChange={(e) =>
+            setTitulo(
+              e.target.value
+            )
+          }
+          style={styles.input}
+        />
+
+        <textarea
+          placeholder="Conteúdo da notícia"
+          value={conteudo}
+          onChange={(e) =>
+            setConteudo(
+              e.target.value
+            )
+          }
+          style={styles.textarea}
+        />
+
+        <input
+          type="text"
+          placeholder="Fonte da notícia"
+          value={fonte}
+          onChange={(e) =>
+            setFonte(
+              e.target.value
+            )
+          }
+          style={styles.input}
+        />
+
+        <button
+          onClick={analisar}
+          style={styles.button}
+        >
+
+          {loading
+            ? "Analisando..."
+            : "✔ Analisar"}
+
+        </button>
+
+      </div>
+
+      {/* RESULTADO */}
+      {resultado && (
+
+        <div style={styles.resultado}>
+
+          <h2
+            style={{
+              color:
+                obterCorResultado(),
+            }}
+          >
+
+            {resultado ===
+            "Fake News"
+              ? "❌ Fake News"
+              : "✅ Confiável"}
+
+          </h2>
+
+          <p style={styles.score}>
+            Confiabilidade:
+            {" "}
+            {score}%
+          </p>
+
+          {/* BARRA */}
+          <div style={styles.barraBg}>
+
+            <div
+              style={{
+                ...styles.barra,
+
+                width: `${score}%`,
+
+                backgroundColor:
+                  obterCorResultado(),
+              }}
+            />
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  );
+
+};
+
+const styles = {
+
+  container: {
+    minHeight: "100vh",
+    backgroundColor: "#f5f7fb",
+    padding: "40px",
+    fontFamily:
+      "Arial, sans-serif",
+  },
+
+  header: {
+    marginBottom: "30px",
+  },
+
+  titulo: {
+    fontSize: "42px",
+    color: "#0E36E3",
+    marginBottom: "10px",
+  },
+
+  subtitulo: {
+    color: "#666",
+    fontSize: "18px",
+  },
+
+  menu: {
+    display: "flex",
+    gap: "20px",
+    marginBottom: "30px",
+    flexWrap: "wrap" as const,
+  },
+
+  menuButton: {
+    padding: "14px 20px",
+    borderRadius: "12px",
+    border: "none",
+    backgroundColor: "#fff",
+    cursor: "pointer",
+    fontWeight: "bold",
+    boxShadow:
+      "0 4px 10px rgba(0,0,0,0.08)",
+  },
+
+  form: {
+    backgroundColor: "#fff",
+    padding: "30px",
+    borderRadius: "20px",
+    boxShadow:
+      "0 6px 18px rgba(0,0,0,0.08)",
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "20px",
+  },
+
+  input: {
+    padding: "14px",
+    borderRadius: "12px",
+    border:
+      "1px solid #d9d9d9",
+    fontSize: "16px",
+    outline: "none",
+  },
+
+  textarea: {
+    height: "180px",
+    padding: "14px",
+    borderRadius: "12px",
+    border:
+      "1px solid #d9d9d9",
+    fontSize: "16px",
+    resize: "none" as const,
+    outline: "none",
+  },
+
+  button: {
+    padding: "16px",
+    borderRadius: "12px",
+    border: "none",
+    backgroundColor: "#0E36E3",
+    color: "#fff",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+
+  resultado: {
+    marginTop: "30px",
+    backgroundColor: "#fff",
+    padding: "30px",
+    borderRadius: "20px",
+    boxShadow:
+      "0 6px 18px rgba(0,0,0,0.08)",
+  },
+
+  score: {
+    fontSize: "18px",
+    marginBottom: "20px",
+  },
+
+  barraBg: {
+    width: "100%",
+    height: "12px",
+    backgroundColor: "#ddd",
+    borderRadius: "10px",
+    overflow: "hidden",
+  },
+
+  barra: {
+    height: "100%",
+    borderRadius: "10px",
+    transition: "0.5s",
+  },
+
+};
+
+export default Home;
