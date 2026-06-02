@@ -4,14 +4,22 @@ import { Link } from "react-router-dom";
 const Home = () => {
 
   const [texto, setTexto] = useState("");
-
   const [menuAberto, setMenuAberto] = useState(false);
+  const [mostrarDicas, setMostrarDicas] = useState(false);
 
   const analisarNoticia = async () => {
 
     console.log(texto);
 
-    // depois conecta na API
+    // TODO: Conectar com a API do backend
+    // Exemplo:
+    // await fetch("http://localhost:8080/analisar", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ texto }),
+    // });
 
     alert("Notícia analisada!");
 
@@ -21,7 +29,6 @@ const Home = () => {
 
     <div style={styles.container}>
 
-      {/* SIDEBAR */}
       {
         menuAberto && (
 
@@ -48,13 +55,10 @@ const Home = () => {
         )
       }
 
-      {/* CONTEÚDO */}
       <div style={styles.content}>
 
-        {/* HEADER */}
         <header style={styles.header}>
 
-          {/* MENU HAMBÚRGUER / SETA */}
           <div
             style={styles.menuHamburger}
             onClick={() => setMenuAberto(!menuAberto)}
@@ -62,33 +66,26 @@ const Home = () => {
 
             {
               menuAberto ? (
-
                 <span style={styles.arrow}>
                   ←
                 </span>
-
               ) : (
-
                 <>
                   <span style={styles.line}></span>
-
                   <span style={styles.line}></span>
-
                   <span style={styles.line}></span>
                 </>
-
               )
             }
 
           </div>
 
           <div style={styles.logo}>
-            🛡️ FakeDetector
+            FakeRadar
           </div>
 
         </header>
 
-        {/* HERO */}
         <section style={styles.hero}>
 
           <h1>
@@ -124,14 +121,56 @@ const Home = () => {
 
         </section>
 
-        {/* CARDS */}
+        {/* CARD APRENDER */}
         <section style={styles.cards}>
 
-          <div style={styles.card}>
+          <div
+            style={{
+              ...styles.card,
+              cursor: "pointer",
+            }}
+            onClick={() => setMostrarDicas(!mostrarDicas)}
+          >
             💡 Aprender sobre Fake News
           </div>
 
         </section>
+
+        {
+          mostrarDicas && (
+
+            <section style={styles.section}>
+
+              <div style={styles.cardInfo}>
+
+                <h2>O que é Fake News?</h2>
+
+                <p>
+                  Fake News são notícias falsas divulgadas como se fossem verdadeiras.
+                </p>
+
+                <p>
+                  Antes de compartilhar uma informação, verifique a fonte,
+                  confira a data da publicação e procure confirmação em
+                  veículos de comunicação confiáveis.
+                </p>
+
+                <h3>Como identificar?</h3>
+
+                <ul>
+                  <li>✔ Verifique a fonte da notícia.</li>
+                  <li>✔ Leia além do título.</li>
+                  <li>✔ Confira a data da publicação.</li>
+                  <li>✔ Compare com outras fontes.</li>
+                  <li>✔ Desconfie de manchetes exageradas.</li>
+                </ul>
+
+              </div>
+
+            </section>
+
+          )
+        }
 
         {/* RESULTADOS */}
         <section style={styles.section}>
@@ -182,17 +221,9 @@ const Home = () => {
 
           <ul style={styles.list}>
 
-            <li>
-              ✔ Evite manchetes exageradas
-            </li>
-
-            <li>
-              ✔ Confira a fonte da notícia
-            </li>
-
-            <li>
-              ✔ Não compartilhe sem checar
-            </li>
+            <li>✔ Evite manchetes exageradas</li>
+            <li>✔ Confira a fonte da notícia</li>
+            <li>✔ Não compartilhe sem checar</li>
 
           </ul>
 
@@ -214,6 +245,7 @@ const Home = () => {
       </div>
 
     </div>
+
   );
 };
 
@@ -336,7 +368,18 @@ const styles = {
     backgroundColor: "#1e293b",
     padding: "20px",
     borderRadius: "10px",
-    width: "220px",
+    width: "250px",
+    textAlign: "center" as const,
+  },
+
+  cardInfo: {
+    backgroundColor: "#1e293b",
+    padding: "25px",
+    borderRadius: "12px",
+    maxWidth: "800px",
+    margin: "0 auto",
+    textAlign: "left" as const,
+    lineHeight: "1.8",
   },
 
   section: {

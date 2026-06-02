@@ -36,7 +36,7 @@ const TendenciasPage = () => {
     buscarTendencias();
 
   }, []);
-
+// Depois colocar de acordo  a conexão com a API
   const buscarTendencias = async () => {
 
     try {
@@ -63,7 +63,7 @@ const TendenciasPage = () => {
     }
 
   };
-
+// Depois colocar de acordo  a conexão com a API
   const acessarNoticia = async (
     id: number
   ) => {
@@ -158,7 +158,7 @@ const TendenciasPage = () => {
         </button>
 
         <h1 style={styles.titulo}>
-          🔥 Tendências
+           Tendências
         </h1>
 
       </div>
@@ -310,7 +310,7 @@ const TendenciasPage = () => {
               <div style={styles.topoCard}>
 
                 <span style={styles.badge}>
-                  🔥 TOP {index + 1}
+                   TOP {index + 1}
                 </span>
 
               </div>
@@ -322,7 +322,7 @@ const TendenciasPage = () => {
 
               {/* CATEGORIA */}
               <p style={styles.categoria}>
-                📂 {
+                 {
                   item.noticia
                     ?.categoria ||
                   "Geral"
@@ -369,7 +369,7 @@ const TendenciasPage = () => {
                 <div style={styles.infoBox}>
 
                   <span style={styles.label}>
-                    🔎 Buscas
+                     Buscas
                   </span>
 
                   <strong style={styles.valor}>
@@ -423,7 +423,7 @@ const styles = {
 
   container: {
     padding: "40px",
-    backgroundColor: "#f5f7fb",
+    background: "linear-gradient(180deg, #296bc2, #1b3f70)",
     minHeight: "100vh",
     fontFamily:
       "Arial, sans-serif",
@@ -438,7 +438,7 @@ const styles = {
 
   titulo: {
     fontSize: "38px",
-    color: "#0E36E3",
+    color: "#e9e9ee",
     fontWeight: "bold",
     margin: 0,
   },
